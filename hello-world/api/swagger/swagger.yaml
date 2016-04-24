@@ -79,6 +79,29 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /survey/{id}:
+    x-swagger-router-controller: get-survey
+    get:
+      description: "get survey instance records"
+      operationId: getSurveys
+      parameters:
+        - name: id
+          in: path
+          description: "Survey instance ID"
+          required: true
+          type: "integer"
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/GetSurveyResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"          
+            
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
@@ -90,6 +113,12 @@ definitions:
       message:
         type: string
   SurveyResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  GetSurveyResponse:
     required:
       - message
     properties:
