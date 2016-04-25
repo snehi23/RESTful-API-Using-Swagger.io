@@ -37,8 +37,8 @@ function checkSurveys(req, res) {
               'WHERE pa.pin = ? AND ? BETWEEN si.startTime AND si.endTime AND ( '+
               'si.state = "pending" OR si.state = "in progress" ) ORDER BY si.startTime', [userPIN, currentDate.toISOString()], function(err, surveys, fields) {
 
-          var processedSurvey = surveys.map(processSurveys);
-              res.json(processedSurvey);
+                var processedSurvey = surveys.map(processSurveys);
+                res.json(processedSurvey);
           });
     });
 

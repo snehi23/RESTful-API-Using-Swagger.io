@@ -1,8 +1,8 @@
 {
-  "name": "hello-world",
+  "name": "prp-api",
   "version": "0.0.1",
   "private": true,
-  "description": "New Swagger API Project",
+  "description": "PRP Swagger API",
   "keywords": [],
   "author": "",
   "license": "",
