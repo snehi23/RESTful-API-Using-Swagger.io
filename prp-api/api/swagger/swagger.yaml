@@ -18,45 +18,6 @@ consumes:
 produces:
   - application/json
 paths:
-  /hello/{name}:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
-    get:
-      description: Returns 'Hello' to the caller
-      # used as the method name of the controller
-      operationId: hello
-      parameters:
-        - name: name
-          in: path
-          description: The name of the person to whom to say hello
-          required: true
-          type: string
-      responses:
-        "200":
-          description: Success
-          schema:
-            # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
-        # responses may fall through to errors
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  /weather:
-    x-swagger-router-controller: weather
-    get:
-      description: "Returns current weather in the specified city to the caller"
-      operationId: getWeatherByCity
-      parameters:
-        - name: city
-          in: query
-          description: "The city you want weather for in the form city,state,country"
-          required: true
-          type: "string"
-      responses:
-        "200":
-          description: Success
-
   /check/surveys/{userPIN}:
     x-swagger-router-controller: check-surveys
     get:
@@ -82,7 +43,7 @@ paths:
   /survey/{id}:
     x-swagger-router-controller: get-survey
     get:
-      description: "get survey instance records"
+      description: "get survey instance records of patient"
       operationId: getSurveys
       parameters:
         - name: id
@@ -105,15 +66,15 @@ paths:
   /survey:
     x-swagger-router-controller: submit-survey
     post:
-      description: "submit survey instance records"
+      description: "submit survey of patient"
       operationId: submitSurvey
       parameters:
         - name: body
           in: body
-          description: "The body"
+          description: "Survey taken by patient"
           required: true
           schema:
-            $ref: "#/definitions/Text"
+            $ref: "#/definitions/SurveyData"
       responses:
        "200":
           description: Success
@@ -121,12 +82,6 @@ paths:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
-  HelloWorldResponse:
-    required:
-      - message
-    properties:
-      message:
-        type: string
   SurveyResponse:
     required:
       - message
@@ -139,7 +94,7 @@ definitions:
     properties:
       message:
         type: string
-  Text:
+  SurveyData:
     type: object
     properties:
       surveyInstanceID:

@@ -1,6 +1,5 @@
 'use strict';
 
-var util = require('util');
 var mysql = require('mysql');
 var moment = require('moment');
 

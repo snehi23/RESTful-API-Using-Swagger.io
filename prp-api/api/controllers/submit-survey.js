@@ -1,8 +1,6 @@
 'use strict';
 
-var util = require('util');
 var mysql = require('mysql');
-var moment = require('moment');
 
 var connection = mysql.createConnection({
    host     : 'localhost',
@@ -17,6 +15,43 @@ module.exports = {
 
 function submitSurvey(req, res) {
 
-    console.log(req.body);
+    const surveyInstanceID = req.swagger.params.body.value.surveyInstanceID;
+    const questionInstArr = [];
+    const currentDate = new Date();
+
+    console.log(req.swagger.params.body.value);
+
+    let currentSurveyInstance = null;
+
+    connection.query('SELECT * from survey_instance where pin = ?', [surveyInstanceID] ,function(err, surveyInstance, fields) {
+       connection.query('SELECT * from question_result',function(err, questionResults, fields) {
+         connection.query('SELECT * from question_option',function(err, questionOptions, fields) {
+
+            for (const currentQuestion of req.swagger.params.body.value.surveyResults) {
+
+              console.log(currentQuestion);
+
+                connection.beginTransaction(function(err) {
+                   connection.query('INSERT INTO question_result SET createdAt=?, updatedAt=?, surveyInstanceId=?, questionOptionId=?',
+                       [currentDate, currentDate, surveyInstanceID, currentQuestion.selectedOptions[0],], function(err, result) {
+
+                        console.log(err);
+
+                   });
+
+                   connection.commit(function(err) {
+                     if (err) {
+                      return connection.rollback(function() {
+                         throw err;
+                      });
+                     }
+                     console.log('success!');
+                   });
+
+               });
+             }
+         });
+      });
+    });
 
 }
