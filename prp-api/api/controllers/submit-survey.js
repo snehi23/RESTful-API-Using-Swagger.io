@@ -13,23 +13,25 @@ module.exports = {
   submitSurvey: submitSurvey
 }
 
+function processResponse(survey) {
+
+  return {
+          id: survey[0].id
+  };
+
+}
+
 function submitSurvey(req, res) {
 
     const surveyInstanceID = req.swagger.params.body.value.surveyInstanceID;
     const questionInstArr = [];
     const currentDate = new Date();
 
-    console.log(req.swagger.params.body.value);
-
-    let currentSurveyInstance = null;
-
-    connection.query('SELECT * from survey_instance where pin = ?', [surveyInstanceID] ,function(err, surveyInstance, fields) {
+    connection.query('SELECT * from survey_instance where id = ?', [surveyInstanceID] ,function(err, surveyInstance, fields) {
        connection.query('SELECT * from question_result',function(err, questionResults, fields) {
          connection.query('SELECT * from question_option',function(err, questionOptions, fields) {
 
             for (const currentQuestion of req.swagger.params.body.value.surveyResults) {
-
-              console.log(currentQuestion);
 
                 connection.beginTransaction(function(err) {
                    connection.query('INSERT INTO question_result SET createdAt=?, updatedAt=?, surveyInstanceId=?, questionOptionId=?',
@@ -45,11 +47,21 @@ function submitSurvey(req, res) {
                          throw err;
                       });
                      }
-                     console.log('success!');
+                    console.log('success!');
+
                    });
 
                });
              }
+
+            res.statusCode = 201;
+            res.setHeader('Location', 'http://localhost:10010/survey');
+            var processedSurveyInstances = {
+                    message: 'Survey Instance Created',
+                    surveyInstanceID: surveyInstance[0].id
+            };
+
+            res.json(processedSurveyInstances);
          });
       });
     });

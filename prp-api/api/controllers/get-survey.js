@@ -68,6 +68,8 @@ function getSurveys(req, res) {
                       questions: groupBy(surveys, 'questionOrder').map(processSurveyInstance)
               };
 
+              console.log(processedSurveyInstances);
+
               res.json(processedSurveyInstances);
         });
     });

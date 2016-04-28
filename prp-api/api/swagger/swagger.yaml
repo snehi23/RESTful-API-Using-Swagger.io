@@ -77,8 +77,16 @@ paths:
           schema:
             $ref: "#/definitions/SurveyData"
       responses:
-       "200":
-          description: Success
+        "201":
+          description: Created
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/PostSurveyResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+          
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
@@ -95,6 +103,12 @@ definitions:
     properties:
       message:
         type: string
+  PostSurveyResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string      
   SurveyData:
     type: object
     properties:
