@@ -10,7 +10,8 @@ var connection = mysql.createConnection({
  });
 
 module.exports = {
-  getSurveys: getSurveys
+  getSurveys: getSurveys,
+  deleteSurvey: deleteSurvey
 }
 
 function groupBy (array, key) {
@@ -68,10 +69,35 @@ function getSurveys(req, res) {
                       questions: groupBy(surveys, 'questionOrder').map(processSurveyInstance)
               };
 
-              console.log(processedSurveyInstances);
-
               res.json(processedSurveyInstances);
         });
     });
+
+}
+
+function deleteSurvey(req, res) {
+
+    var id = req.swagger.params.id.value;
+
+                connection.beginTransaction(function(err) {
+                   connection.query('DELETE FROM survey_instance WHERE id = ?',
+                       [id], function(err, result) {
+
+                   });
+
+                   connection.commit(function(err) {
+                     if (err) {
+                      return connection.rollback(function() {
+                         throw err;
+                      });
+                     }
+                    console.log('success!');
+
+                   });
+                 });
+
+            res.statusCode = 204;
+            res.setHeader('Location', 'http://localhost:10010/survey');
+            res.send();
 
 }

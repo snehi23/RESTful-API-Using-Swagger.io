@@ -35,7 +35,7 @@ function submitSurvey(req, res) {
 
                 connection.beginTransaction(function(err) {
                    connection.query('INSERT INTO question_result SET createdAt=?, updatedAt=?, surveyInstanceId=?, questionOptionId=?',
-                       [currentDate, currentDate, surveyInstanceID, currentQuestion.selectedOptions[0],], function(err, result) {
+                       [currentDate, currentDate, surveyInstanceID, currentQuestion.selectedOptions[0]], function(err, result) {
 
                         console.log(err);
 
