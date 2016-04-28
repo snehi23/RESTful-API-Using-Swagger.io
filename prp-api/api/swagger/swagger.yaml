@@ -35,6 +35,16 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/SurveyResponse"
+        "404":
+          description: Improper Client Request
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Server Error
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
         # responses may fall through to errors
         default:
           description: Error
@@ -58,6 +68,16 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/GetSurveyResponse"
+        "404":
+          description: Improper Client Request
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Server Error
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
         # responses may fall through to errors
         default:
           description: Error
@@ -78,6 +98,16 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/DeleteSurveyResponse"
+        "404":
+          description: Improper Client Request
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Server Error
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
         default:
           description: Error
           schema:
@@ -101,6 +131,16 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/PostSurveyResponse"
+        "404":
+          description: Improper Client Request
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Server Error
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ErrorResponse"
         default:
           description: Error
           schema:
