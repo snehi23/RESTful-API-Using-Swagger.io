@@ -34,18 +34,16 @@ function groupBy (array, key) {
 }
 
 function processSurveyInstance (questionRecord) {
+
+    console.log(questionRecord[0].sid);
     return {
         quesID: questionRecord[0].questionTemplateId,
-        questionType: questionRecord[0].questionType,
-        questionText: questionRecord[0].questionText,
-        answerOptions: questionRecord.map(processAnswers)
-    };
-}
-
-function processAnswers (answer) {
-    return {
-        answerID: answer.qoid,
-        answerText: answer.optionText
+        _links: {
+                  question: {
+                        href: "/survey/"+questionRecord[0].sid+"/question/"+questionRecord[0].questionTemplateId,
+                        type: "application/json"
+                      }
+        }
     };
 }
 
@@ -64,9 +62,9 @@ function getSurveys(req, res) {
               'ORDER BY jsq.questionOrder, qo.`order`', [id], function(err, surveys, fields) {
 
               var processedSurveyInstances = {
+                      message: 'SUCCESS',
                       surveyInstanceID: surveys[0].sid,
                       surveyName: surveys[0].name,
-                      message: 'SUCCESS',
                       questions: groupBy(surveys, 'questionOrder').map(processSurveyInstance)
               };
 

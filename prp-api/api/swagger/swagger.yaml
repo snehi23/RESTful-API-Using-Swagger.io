@@ -18,15 +18,15 @@ consumes:
 produces:
   - application/json
 paths:
-  /check/surveys/{userPIN}:
+  /patient/{userPIN}/surveys:
     x-swagger-router-controller: check-surveys
     get:
-      description: "check survey instance associated with patient"
+      description: "check status of survey instances associated with patient"
       operationId: checkSurveys
       parameters:
         - name: userPIN
           in: path
-          description: "User Pin"
+          description: "User Pin of patient"
           required: true
           type: "integer"
       responses:
@@ -39,11 +39,12 @@ paths:
         default:
           description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: "#/definitions/ErrorResponse" 
+
   /survey/{id}:
     x-swagger-router-controller: get-survey
     get:
-      description: "get survey instance records of patient"
+      description: "get survey instance of patient"
       operationId: getSurveys
       parameters:
         - name: id

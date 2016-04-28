@@ -14,13 +14,22 @@ module.exports = {
   checkSurveys: checkSurveys
 }
 
-function processSurveys(surveys) {
+function processSurveys(survey) {
 
   return {
-        surveyTitle: surveys.name,
-        surveyInstanceID: surveys.id,
-        nextDueAt: surveys.startTime,
-        okayToStart: moment() < surveys.endTime && moment() > surveys.startTime
+        surveyTitle: survey.name,
+        surveyInstanceID: survey.id,
+        nextDueAt: survey.startTime,
+        okayToStart: moment() < survey.endTime && moment() > survey.startTime,
+        _links: { self: {
+                         href: "/patient/"+survey.userPIN+"/surveys",
+                         type: "application/json"
+                       },
+                  survey: {
+                        href: "/survey/"+survey.id,
+                        type: "application/json"
+                      }
+        }
     };
 }
 
@@ -30,15 +39,14 @@ function checkSurveys(req, res) {
   let currentPatient = null;
   var userPIN = req.swagger.params.userPIN.value;
 
-   connection.query('SELECT * from patient where pin = ?', [userPIN] ,function(err, patient, fields) {
-        connection.query('SELECT *, si.id FROM survey_instance AS si JOIN patient AS pa '+
+        connection.query('SELECT *, pa.pin AS userPIN ,si.id FROM survey_instance AS si JOIN patient AS pa '+
               'ON si.patientId = pa.id JOIN survey_template AS st ON si.surveyTemplateId = st.id '+
               'WHERE pa.pin = ? AND ? BETWEEN si.startTime AND si.endTime AND ( '+
               'si.state = "pending" OR si.state = "in progress" ) ORDER BY si.startTime', [userPIN, currentDate.toISOString()], function(err, surveys, fields) {
 
-                var processedSurvey = surveys.map(processSurveys);
-                res.json(processedSurvey);
+                var processedSurveys = surveys.map(processSurveys);
+
+                res.json(processedSurveys);
           });
-    });
 
    }
